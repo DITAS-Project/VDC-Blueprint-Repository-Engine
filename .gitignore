@@ -20,3 +20,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+/target
+/bin
+/.settings
+nb-configuration.xml
+.classpath
+.project
+java.com
+HotSpot JVM error
+An application or applet has crashed Java Virtual Machine. As result, a log file with the name hs_err_pid is placed on the desktop.
