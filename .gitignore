@@ -27,6 +27,3 @@ hs_err_pid*
 nb-configuration.xml
 .classpath
 .project
-java.com
-HotSpot JVM error
-An application or applet has crashed Java Virtual Machine. As result, a log file with the name hs_err_pid is placed on the desktop.
