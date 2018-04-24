@@ -12,6 +12,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonObjectId;
 import org.bson.BsonString;
@@ -92,9 +93,9 @@ public class RequestTransformer implements Transformer {
 			BsonDocument dmanagement = data.getDocument("DATA_MANAGEMENT");
 			BsonDocument generalMetrics = new BsonDocument();
 			
-			generalMetrics.put("dataUtility",new BsonDocument());
-			generalMetrics.put("security", new BsonDocument());
-			generalMetrics.put("privacy", new BsonDocument());
+			generalMetrics.put("dataUtility",new BsonArray());
+			generalMetrics.put("security", new BsonArray());
+			generalMetrics.put("privacy", new BsonArray());
 			
 			dmanagement.append("generalMetrics", generalMetrics);
 			
