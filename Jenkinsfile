@@ -8,8 +8,12 @@ pipeline {
                 }
             }
             steps {
-				// Do Maven stuff
-				// sh 'mvn whatever'
+				// Build
+                // Do Maven stuff
+                // sh 'mvn whatever'
+				
+				// Test	
+                // sh 'mvn whatever'
             }
             // Save the reports always
             post {
@@ -29,7 +33,7 @@ pipeline {
                 echo 'Creating the image...'
 
                 // This will search for a Dockerfile.artifact in the working directory and build the image to the local repository
-                sh "docker build -t \"ditas/VDC-Blueprint-Repository-Engine\" -f Dockerfile.artifact ."
+                sh "docker build -t \"ditas/vdc-blueprint-repository-engine\" -f Dockerfile.artifact ."
                 echo "Done"
 
                 echo 'Retrieving Docker Hub password from /opt/ditas-docker-hub.passwd...'
@@ -43,8 +47,8 @@ pipeline {
                 sh "docker login -u ditasgeneric -p ${password}"
                 echo "Done"
 
-                echo "Pushing the image ditas/VDC-Blueprint-Repository-Engine:latest..."
-                sh "docker push ditas/VDC-Blueprint-Repository-Engine:latest"
+                echo "Pushing the image ditas/vdc-blueprint-repository-engine:latest..."
+                sh "docker push ditas/vdc-blueprint-repository-engine:latest"
                 echo "Done "
             }
         }
