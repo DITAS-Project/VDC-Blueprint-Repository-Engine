@@ -1,0 +1,16 @@
+FROM maven:latest
+
+# Copy the code to the image
+WORKDIR app
+ADD src .
+ADD ./pom.xml .
+
+# Generate the artifact
+RUN mvn clean package -DskipTests
+
+# EDIT THIS
+# Runtime config
+EXPOSE PORT? # A range >50000. Remenber to set the ports also in the components spreadsheet
+
+# EDIT THIS
+CMD ["mvn", "xxxx"]
