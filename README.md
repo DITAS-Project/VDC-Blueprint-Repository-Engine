@@ -63,5 +63,5 @@ security.yml
 
 To launch this component, execute the following command:
 ```
-$ java -jar target/vdc-repository-engine etc/configuration.yml
+$ java -jar target/vdc-repository-egine-0.0.1-SNAPSHOT-jar-with-dependencies.jar etc/configuration.yml
 ```
