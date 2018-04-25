@@ -13,5 +13,5 @@ sudo docker rm --force vdc-blueprint-repository-engine || true
 sudo docker pull ditas/vdc-blueprint-repository-engine:latest
 
 # SET THE PORT MAPPING
-sudo docker run -p XXXX:XXXX -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
+sudo docker run -p HOST_PORT:CONTAINER_PORT -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
 ENDSSH
