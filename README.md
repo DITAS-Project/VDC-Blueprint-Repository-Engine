@@ -58,8 +58,8 @@ In order to work, this component requires the following elements to be installed
 
 ## Execution
 Application requires two configuration files : 
-configuration.yml 
-security.yml
+* configuration.yml 
+* security.yml
 
 To launch this component, execute the following command:
 ```
