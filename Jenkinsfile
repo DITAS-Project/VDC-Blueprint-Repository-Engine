@@ -9,7 +9,6 @@ pipeline {
             }
             steps {
 		// Build
-                // Do Maven stuff
                 // sh 'mvn whatever'
 				
 		// Test	
