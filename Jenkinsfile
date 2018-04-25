@@ -8,11 +8,11 @@ pipeline {
                 }
             }
             steps {
-				// Build
+		// Build
                 // Do Maven stuff
                 // sh 'mvn whatever'
 				
-				// Test	
+		// Test	
                 // sh 'mvn whatever'
             }
             // Save the reports always
@@ -59,7 +59,9 @@ pipeline {
                 skipDefaultCheckout true
             }
             steps {
-                // TODO: Uncomment this when everything's finished - Deploy to Staging environment calling the deployment script
+                // TODO: Uncomment this when everything's finished.
+		// TODO: Remember to edit 'deploy-staging.sh' and configure the ports
+		// Deploy to Staging environment calling the deployment script
                 // sh './jenkins/deploy-staging.sh'
             }
         }
