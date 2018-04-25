@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>gr.ntua</groupId>
-  <artifactId>vdc-repository-egine</artifactId>
+  <artifactId>vdc-repository-engine</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>vdc-repository-egine</name>
+  <name>vdc-repository-engine</name>
   <url>http://maven.apache.org</url>
   
   <properties>
