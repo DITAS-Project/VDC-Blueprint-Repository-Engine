@@ -1,3 +1,5 @@
+// Jenkins CI manual can be found here (CI_manual_v2): https://repository.atosresearch.eu/index.php/apps/files/?dir=%2FDITAS%2FWP5%20case%20studies%2FIntegration
+// Your repo link in Jenkins: http://178.22.71.23:8080/job/VDC-Blueprint-Repository-Engine/job/master/
 pipeline {
     agent none
     stages {
@@ -8,11 +10,10 @@ pipeline {
                 }
             }
             steps {
-				// Build
-                // Do Maven stuff
+		// Build 
                 // sh 'mvn whatever'
 				
-				// Test	
+		// Test	
                 // sh 'mvn whatever'
             }
             // Save the reports always
@@ -35,9 +36,9 @@ pipeline {
                 // This will search for a Dockerfile.artifact in the working directory and build the image to the local repository
                 sh "docker build -t \"ditas/vdc-blueprint-repository-engine\" -f Dockerfile.artifact ."
                 echo "Done"
-
-                echo 'Retrieving Docker Hub password from /opt/ditas-docker-hub.passwd...'
+		    
                 // Get the password from a file. This reads the file from the host, not the container. Slaves already have the password in there.
+                echo 'Retrieving Docker Hub password from /opt/ditas-docker-hub.passwd...'
                 script {
                     password = readFile '/opt/ditas-docker-hub.passwd'
                 }
@@ -59,7 +60,9 @@ pipeline {
                 skipDefaultCheckout true
             }
             steps {
-                // TODO: Uncomment this when everything's finished - Deploy to Staging environment calling the deployment script
+                // TODO: Uncomment this when the previous stages run correctly
+		// TODO: Remember to edit 'deploy-staging.sh' and configure the ports
+		// Deploy to Staging environment calling the deployment script
                 // sh './jenkins/deploy-staging.sh'
             }
         }
