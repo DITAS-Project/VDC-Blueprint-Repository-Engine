@@ -1,3 +1,4 @@
+// Jenkins CI manual can be found here (CI_manual_v2): https://repository.atosresearch.eu/index.php/apps/files/?dir=%2FDITAS%2FWP5%20case%20studies%2FIntegration
 pipeline {
     agent none
     stages {
