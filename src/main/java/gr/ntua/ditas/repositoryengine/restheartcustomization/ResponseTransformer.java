@@ -14,7 +14,6 @@ import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.restheart.handlers.RequestContext;
-import org.restheart.handlers.RequestContext.METHOD;
 
   
 public class ResponseTransformer implements Transformer {
@@ -23,7 +22,7 @@ public class ResponseTransformer implements Transformer {
 	@Override
 	public void transform(HttpServerExchange exchange, RequestContext context, BsonValue contentToTransform, BsonValue args) {
 		
-		if (context.getMethod() == METHOD.POST) {
+		if (context.isPost()) {
 			LOGGER.debug("POST response");
 			
 			if (context.getResponseStatusCode() == HttpStatus.SC_CREATED) {
