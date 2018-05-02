@@ -11,10 +11,10 @@ pipeline {
             }
             steps {
 		// Build 
-                // sh 'mvn whatever'
+                sh 'mvn -B -DskipTests clean package'
 				
 		// Test	
-                // sh 'mvn whatever'
+                sh 'mvn test'
             }
             // Save the reports always
             post {
