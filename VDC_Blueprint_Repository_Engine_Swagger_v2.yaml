@@ -1,0 +1,121 @@
+swagger: '2.0'
+info:
+  title: VDC Blueprint Repository Engine
+  version: 0.0.1
+paths:
+  /ditas/blueprints:
+    get:
+      description: Blueprints Retrieval
+      parameters:
+        - name: section
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: filter
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              _embedded:
+                type: array
+                items:
+                  type: object
+              _returned:
+                type: integer
+    post:
+      description: Blueprint Creation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: blueprint
+          in: body
+          description: Abstract VDC Blueprint(s) to be stored in the VDC Blueprint Repository
+          required: true
+          schema: {}
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              blueprint_id:
+                type: array
+                items:
+                  type: string
+            required:
+              - blueprint_id
+  '/ditas/blueprints/{blueprint_id}':
+    get:
+      description: Blueprint Retrieval by id
+      produces:
+        - application/json
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+        - name: section
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      description: Blueprint Deletion by id
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: successful operation
+    patch:
+      description: Blueprint Update by id
+      consumes:
+        - application/json
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+        - name: FieldsToBeUpdated
+          in: body
+          description: all the fields to be updated
+          required: true
+          schema:
+            type: object
+            example:
+              INTERNAL_STRUCTURE.Overview:
+                name: VDC_1
+                description: Information about the patients in Milan
+                tags:
+                  - method_name: get_patient_details
+                    tags:
+                      - Milan
+                      - patients
+              INTERNAL_STRUCTURE.Flow.platform: Node-RED
+      responses:
+        '200':
+          description: successful operation
