@@ -1,1 +1,1 @@
-maven
+FROM maven:latest
