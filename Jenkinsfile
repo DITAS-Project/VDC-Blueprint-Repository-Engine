@@ -61,7 +61,7 @@ pipeline {
             }
             steps {
 		// Deploy to Staging environment calling the deployment script
-                sh './jenkins/deploy-staging.sh'
+                sh './jenkins/deploy/deploy-staging.sh'
             }
         }
     }
