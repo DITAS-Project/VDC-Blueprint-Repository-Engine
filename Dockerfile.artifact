@@ -10,7 +10,7 @@ RUN mvn clean package -DskipTests
 
 # EDIT THIS
 # Runtime config
-EXPOSE PORT? # A range >50000. Remenber to set the ports also in the components spreadsheet
+EXPOSE 50009
 
 # EDIT THIS
 CMD ["mvn", "xxxx"]
