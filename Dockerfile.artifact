@@ -18,5 +18,5 @@ FROM java:8-jre-alpine
 COPY target/vdc-repository-engine-0.0.1-SNAPSHOT.jar /app/vdc-repository-engine-0.0.1-SNAPSHOT.jar
 COPY etc/configuration.yml /app/etc/configuration.yml
 COPY etc/security.yml /app/etc/security.yml
-EXPOSE 8080
+EXPOSE 50009
 ENTRYPOINT ["java", "-jar", "\/app\/vdc-repository-engine-0.0.1-SNAPSHOT.jar", "etc\/configuration.yml"]
