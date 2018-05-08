@@ -12,7 +12,10 @@ pipeline {
             steps {
 		// Build 
                 sh 'mvn -B -DskipTests clean package'
-				
+		
+		// Archive the artifact to be accessible from the Artifacts tab into the Blue Ocean interface, just to have it handy
+		archiveArtifacts 'target/*.jar'
+		    
 		// Test	
                 sh 'mvn test'
             }
