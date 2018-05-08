@@ -1,16 +1,22 @@
-FROM maven:latest
-
+#FROM maven:latest
+#
 # Copy the code to the image
-WORKDIR app
-ADD src .
-ADD ./pom.xml .
+#WORKDIR app
+#ADD src .
+#ADD ./pom.xml .
 
 # Generate the artifact
-RUN mvn clean package -DskipTests
+#RUN mvn clean package -DskipTests
 
 # EDIT THIS
 # Runtime config
-EXPOSE 50009
+#EXPOSE 50009
 
 # EDIT THIS
-CMD ["mvn", "xxxx"]
+#CMD ["mvn", "xxxx"]
+FROM java:8-jre-alpine
+COPY target/vdc-repository-engine-0.0.1-SNAPSHOT.jar /app/vdc-repository-engine-0.0.1-SNAPSHOT.jar
+COPY etc/configuration.yml /app/etc/configuration.yml
+COPY etc/security.yml /app/etc/security.yml
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "\/app\/vdc-repository-engine-0.0.1-SNAPSHOT.jar", "etc\/configuration.yml"]
