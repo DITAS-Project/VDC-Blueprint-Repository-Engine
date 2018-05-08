@@ -14,10 +14,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.BsonArray;
 import org.bson.BsonDocument;
-import org.bson.BsonObjectId;
-import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.restheart.handlers.RequestContext;
@@ -42,13 +39,13 @@ public class RequestTransformer implements Transformer {
 		if (context.isPost()) {
 		
 			LOGGER.debug("POST request");
-			//auto-generated fields
+			
 			if (contentToTransform.isArray()) 
 				contentToTransform.asArray().forEach( 
-						doc -> post_transform(doc)
+						doc -> logical_validate(doc)
 				);
 			if (contentToTransform.isDocument()) 
-				post_transform(contentToTransform);
+				logical_validate(contentToTransform);
 		
 		}else if (context.isGet()) {
 			
@@ -105,26 +102,9 @@ public class RequestTransformer implements Transformer {
 	}
 	
 
-	private void post_transform(BsonValue contentToTransform){
+	private void logical_validate(BsonValue contentToTransform){
 		
 		if (contentToTransform.isDocument()) {
-			BsonDocument data = contentToTransform.asDocument();
-		
-			BsonObjectId id = new BsonObjectId();
-			String sid = id.getValue().toHexString();
-			
-			data.put("_id",id);
-			data.put("UUID", new BsonString(sid));
-			BsonDocument dmanagement = data.getDocument("DATA_MANAGEMENT");
-			BsonDocument generalMetrics = new BsonDocument();
-			
-			generalMetrics.put("dataUtility",new BsonArray());
-			generalMetrics.put("security", new BsonArray());
-			generalMetrics.put("privacy", new BsonArray());
-			
-			dmanagement.append("generalMetrics", generalMetrics);
-			
-			//LOGGER.debug(contentToTransform.asDocument().toJson());
 		}
 	}
 	
