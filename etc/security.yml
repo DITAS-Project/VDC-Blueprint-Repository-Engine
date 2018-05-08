@@ -1,0 +1,32 @@
+## Security configuration file.
+---
+## Configuration for file based Identity Manager
+users:
+    - userid: publicUser
+      password: Blueprint
+      roles: [users]
+
+## Configuration for file based Access Manager
+
+## Look at undertow documentation for information about predictates syntax
+## http://undertow.io/undertow-docs/undertow-docs-1.3.0/index.html#predicates-attributes-and-handlers
+## The special role $unauthenticated allows to give permissions without requiring authentication
+permissions:
+
+# Not authenticated user can only GET any resource under the /ditas/blueprints URI
+    - role: $unauthenticated
+      predicate: path-prefix[path="/ditas/blueprints"] and method[value="GET"]
+
+      # Users with role 'users' can GET any collection or document resource (excluding dbs)
+    - role: users
+      predicate: regex[pattern="/.*/.*", value="%R", full-match=true] and method[value="GET"]
+
+    - role: users
+      predicate: path[path="/ditas/blueprints"] and method[value="POST"]
+
+    - role: users
+      predicate: path-template[value="/ditas/blueprints/{doc}"] and method[value="PATCH"]
+
+    - role: users
+      predicate: path-template[value="/ditas/blueprints/{doc}"] and method[value="DELETE"]
+ 
