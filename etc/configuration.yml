@@ -181,10 +181,10 @@ metadata-named-singletons:
 
 idm:
     implementation-class: org.restheart.security.impl.SimpleFileIdentityManager
-    conf-file: ./etc/security.yml
+    conf-file: ./security.yml
 access-manager:
     implementation-class: org.restheart.security.impl.SimpleAccessManager
-    conf-file: ./etc/security.yml
+    conf-file: ./security.yml
     
 # RESTHeart uses the BasicAuthenticationMechanism by default. 
 # A different mechanism can be specified via the auth-mechanism configuration option
