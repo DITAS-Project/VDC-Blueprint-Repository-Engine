@@ -69,6 +69,7 @@ paths:
           in: path
           required: true
           type: string
+          x-example: 5ae9a3568635dbe9073e32d5
         - name: section
           in: query
           required: false
@@ -88,6 +89,7 @@ paths:
           in: path
           required: true
           type: string
+          x-example: 5ae9a3568635dbe9073e32d5
       responses:
         '204':
           description: successful operation
@@ -100,6 +102,7 @@ paths:
           in: path
           required: true
           type: string
+          x-example: 5ae9a3568635dbe9073e32d5
         - name: FieldsToBeUpdated
           in: body
           description: all the fields to be updated
