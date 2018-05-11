@@ -3,7 +3,7 @@ info:
   title: VDC Blueprint Repository Engine
   version: 0.0.1
 paths:
-  /ditas/blueprints:
+  /blueprints:
     get:
       description: Blueprints Retrieval
       parameters:
@@ -59,7 +59,7 @@ paths:
                   type: string
             required:
               - blueprint_id
-  '/ditas/blueprints/{blueprint_id}':
+  '/blueprints/{blueprint_id}':
     get:
       description: Blueprint Retrieval by id
       produces:
