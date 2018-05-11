@@ -11,7 +11,7 @@
       }
    ],
    "paths":{  
-      "/ditas/blueprints":{  
+      "/blueprints":{  
          "get":{  
             "description":"Blueprints Retrieval",
             "parameters":[  
@@ -104,7 +104,7 @@
             }
          }
       },
-      "/ditas/blueprints/{blueprint_id}":{  
+      "/blueprints/{blueprint_id}":{  
          "get":{  
             "description":"Blueprint Retrieval by id",
             "parameters":[  
