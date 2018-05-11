@@ -2,7 +2,7 @@
 The goal of the component is to provide CRUD operations to other DITAS components and DITAS roles via a HTTP REST interface.
 
 ## List of functionalities
-* `GET` `/ditas/blueprints`
+* `GET` `/blueprints`
   * **description**: this method retrieves all blueprints (or specific sections).
   * (indicative) **caller** Resolution Engine
   * **input**
@@ -11,7 +11,7 @@ The goal of the component is to provide CRUD operations to other DITAS component
   * **output**
     * list of blueprints 
 
-* `GET` `/ditas/blueprints/{id}`
+* `GET` `/blueprints/{id}`
   * **description**: this method retrieves a blueprint (or specific sections) based on its id. 
   * (indicative) **caller** Resolution Engine
   * **input**
@@ -20,7 +20,7 @@ The goal of the component is to provide CRUD operations to other DITAS component
   * **output**
     * blueprint
 
-* `POST` `/ditas/blueprints`
+* `POST` `/blueprints`
   * **description**: this method creates a new blueprint.
   * **caller** Data Administrator
   * **input**
@@ -28,7 +28,7 @@ The goal of the component is to provide CRUD operations to other DITAS component
   * **output**
     * the id(s) of the created blueprint(s)
 
-* `PATCH` `/ditas/blueprints/{id}`
+* `PATCH` `/blueprints/{id}`
   * **description**: this method updates an existing blueprint based by its id.
   * **caller** Data Administrator
   * **input**
@@ -37,7 +37,7 @@ The goal of the component is to provide CRUD operations to other DITAS component
   * **output**
     * none
 
-* `DELETE` `/ditas/blueprints/{id}`
+* `DELETE` `/blueprints/{id}`
   * **description**: this method deletes an existing blueprint based by its id.
   * **caller** Data Administrator
   * **input**
@@ -63,5 +63,5 @@ Application requires two configuration files :
 
 To launch this component, execute the following command:
 ```
-$ java -jar target/vdc-repository-engine-0.0.1-SNAPSHOT-jar-with-dependencies.jar etc/configuration.yml
+$ java -jar target/vdc-repository-engine-0.0.1-SNAPSHOT.jar etc/configuration.yml
 ```
