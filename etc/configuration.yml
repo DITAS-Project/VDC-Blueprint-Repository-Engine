@@ -70,7 +70,7 @@ mongo-uri: mongodb://publicMongoUser:Blueprint@31.171.247.162:50010/?authSource=
 
 # Use mongo-mounts to bind URls to mongodb resources using the out-of-the-box URL rewrite feature.
 mongo-mounts:
-    - what: "*"
+    - what: /ditas
       where: /
     
 #### Static Web Resources
