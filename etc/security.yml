@@ -13,20 +13,29 @@ users:
 ## The special role $unauthenticated allows to give permissions without requiring authentication
 permissions:
 
-# Not authenticated user can only GET any resource under the /ditas/blueprints URI
+# Not authenticated user can only GET any resource under the /blueprints URI
     - role: $unauthenticated
-      predicate: path-prefix[path="/ditas/blueprints"] and method[value="GET"]
+      predicate: path-prefix[path="/blueprints"] and method[value="GET"]
+      
+    - role: $unauthenticated
+      predicate: path-prefix[path="/_schemas"] and method[value="GET"]
 
-      # Users with role 'users' can GET any collection or document resource (excluding dbs)
-    - role: users
-      predicate: regex[pattern="/.*/.*", value="%R", full-match=true] and method[value="GET"]
-
-    - role: users
-      predicate: path[path="/ditas/blueprints"] and method[value="POST"]
-
-    - role: users
-      predicate: path-template[value="/ditas/blueprints/{doc}"] and method[value="PATCH"]
+# Users with role 'users' can GET any collection or document resource (excluding dbs)
+#    - role: users
+#      predicate: regex[pattern="/.*/.*", value="%R", full-match=true] and method[value="GET"]
 
     - role: users
-      predicate: path-template[value="/ditas/blueprints/{doc}"] and method[value="DELETE"]
+      predicate: path-prefix[path="/_schemas"] and method[value="GET"]
+      
+    - role: users
+      predicate: path-prefix[path="/blueprints"] and method[value="GET"]
+      
+    - role: users
+      predicate: path[path="/blueprints"] and method[value="POST"]
+
+    - role: users
+      predicate: path-template[value="/blueprints/{doc}"] and method[value="PATCH"]
+
+    - role: users
+      predicate: path-template[value="/blueprints/{doc}"] and method[value="DELETE"]
  
