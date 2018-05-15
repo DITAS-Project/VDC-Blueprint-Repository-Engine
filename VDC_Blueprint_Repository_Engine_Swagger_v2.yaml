@@ -44,7 +44,7 @@ paths:
       parameters:
         - name: blueprint
           in: body
-          description: Abstract VDC Blueprint(s) to be stored in the VDC Blueprint Repository
+          description: Abstract VDC Blueprint to be stored in the VDC Blueprint Repository
           required: true
           schema:
             type: object
