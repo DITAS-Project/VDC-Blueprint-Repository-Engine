@@ -144,23 +144,19 @@ public class LogicalValidator implements Checker {
 
     @Override
     public PHASE getPhase(RequestContext context) {
-    	LOGGER.debug("-------GET_PHASE() IS CALLED------");
     	if (context.getMethod() == METHOD.PATCH
                 || CheckersUtils
                         .doesRequestUsesDotNotation(context.getContent())
                 || CheckersUtils
                         .doesRequestUsesUpdateOperators(context.getContent())) {
-    		LOGGER.debug("-------AFTER_WRITE------");
     		return PHASE.AFTER_WRITE;
         } else {
-        	LOGGER.debug("-------BEFORE_WRITE------");
             return PHASE.BEFORE_WRITE;
         }
     }
 
     @Override
     public boolean doesSupportRequests(RequestContext context) {
-    	LOGGER.debug("-------DOES_SUPPORT_REQUESTS() IS CALLED------");
     	return !(CheckersUtils.isBulkRequest(context)
                 && getPhase(context) == PHASE.AFTER_WRITE);
     }
