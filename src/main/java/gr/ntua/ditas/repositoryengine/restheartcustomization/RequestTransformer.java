@@ -21,7 +21,7 @@ import org.restheart.handlers.RequestContext;
 import org.restheart.db.MongoDBClientSingleton;
   
 public class RequestTransformer implements Transformer {
-	private static final Logger LOGGER = LoggerFactory.getLogger("org.restheart.examples.applogic.RequestTransformer");
+	private static final Logger LOGGER = LoggerFactory.getLogger("org.restheart.metadata.transformers.Transformer");
 	private static final MongoClient client = MongoDBClientSingleton.getInstance().getClient();
 
 	private static final List<String> SECTIONS = Arrays.asList(
@@ -36,18 +36,7 @@ public class RequestTransformer implements Transformer {
 	public void transform(HttpServerExchange exchange, RequestContext context, BsonValue contentToTransform,
 			BsonValue args) {
 		
-		if (context.isPost()) {
-		
-			LOGGER.debug("POST request");
-			
-			if (contentToTransform.isArray()) 
-				contentToTransform.asArray().forEach( 
-						doc -> logical_validate(doc)
-				);
-			if (contentToTransform.isDocument()) 
-				logical_validate(contentToTransform);
-		
-		}else if (context.isGet()) {
+		if (context.isGet()) {
 			
 			LOGGER.debug("GET request");
 			//LOGGER.debug("Entry : "+ contentToTransform.asDocument().toJson());
@@ -60,7 +49,7 @@ public class RequestTransformer implements Transformer {
 				Deque<String> d = new ArrayDeque<>();
 				
 				for(String qsection : qsections) {
-					String section = parseSection(qsection);
+					String section = parseSection(qsection , context);
 					params.remove("section");
 					if (!section.isEmpty()) {
 						d.add("{'"+ section + "':1}");
@@ -95,28 +84,42 @@ public class RequestTransformer implements Transformer {
 			
 			if (contentToTransform.isDocument()) {
 				BsonDocument data = contentToTransform.asDocument();
-				if (data.containsKey("UUID")) data.remove("UUID");
 				if (data.containsKey("_etag")) data.remove("_etag");
 			}	
+		}else if (context.isPost()) {
+			LOGGER.debug("POST request");
+			
+			if (contentToTransform.isArray()) 
+				contentToTransform.asArray().forEach( 
+						doc -> remove_id(doc , context)
+				);
+			if (contentToTransform.isDocument()) 
+				remove_id(contentToTransform , context);
 		}
 	}
 	
+	
+	private void remove_id(BsonValue doc, RequestContext context) {
+		BsonDocument docd = doc.asDocument();
+		if (docd.containsKey("_id")) {
+			docd.remove("_id");
+			context.addWarning("Field _id was filtered out from the request");
+		}
+		return;
+	}
 
-	private void logical_validate(BsonValue contentToTransform){
-		
-		if (contentToTransform.isDocument()) {
-		}
-	}
-	
-	
-	private String parseSection(String qsection) {
+
+
+	private String parseSection(String qsection , RequestContext context) {
 		
 		if (SECTIONS.contains(qsection)) return qsection;
 		try {
 		      int index = Integer.parseInt(qsection);
 		      return SECTIONS.get(index-1);
 		} catch (IndexOutOfBoundsException | NumberFormatException e) {
-			LOGGER.info("invalid section parameter");
+			String warning = "invalid section parameter";
+			LOGGER.debug(warning);
+			context.addWarning(warning);
 			return "";
 		}
 	}

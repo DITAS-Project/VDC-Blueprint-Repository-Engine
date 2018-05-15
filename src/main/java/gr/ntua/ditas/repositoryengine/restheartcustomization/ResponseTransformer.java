@@ -17,7 +17,7 @@ import org.restheart.handlers.RequestContext;
 
   
 public class ResponseTransformer implements Transformer {
-	private static final Logger LOGGER = LoggerFactory.getLogger("org.restheart.examples.applogic.ResponseTransformer");
+	private static final Logger LOGGER = LoggerFactory.getLogger("org.restheart.metadata.transformers.Transformer");
 	
 	@Override
 	public void transform(HttpServerExchange exchange, RequestContext context, BsonValue contentToTransform, BsonValue args) {
