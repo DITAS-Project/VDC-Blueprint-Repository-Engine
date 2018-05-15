@@ -46,7 +46,8 @@ paths:
           in: body
           description: Abstract VDC Blueprint(s) to be stored in the VDC Blueprint Repository
           required: true
-          schema: {}
+          schema:
+            type: object
       responses:
         '201':
           description: successful operation
