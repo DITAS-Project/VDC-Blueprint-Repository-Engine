@@ -31,7 +31,7 @@ public class LogicalValidator implements Checker {
 		for (BsonValue data_source : data_sources) {
 			String name = data_source.asDocument().getString("name").getValue();
 			if (!ds.add(name)) {
-				warning = "Duplicate Data Source with name " + name;
+				warning = "Duplicate INTERNAL_STRUCTURE.Data_Sources with name " + name;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -46,7 +46,7 @@ public class LogicalValidator implements Checker {
 			BsonDocument d_method = method.asDocument(); 
 			String name = d_method.getString("name").getValue();
 			if (!ms.add(name)) {
-				warning = "Duplicate Api Method with name " + name;
+				warning = "Duplicate EXPOSED_API.Methods with name " + name;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -55,7 +55,7 @@ public class LogicalValidator implements Checker {
 			for (BsonValue data_source : method_ds) {
 				String ds_name = data_source.asString().getValue();
 				if (!ds.contains(ds_name)) {
-					warning = "Data source " + ds_name + " of method " + name + " is not declared in INTERNAL_STRUCTURE.Data_Sources";
+					warning = "Data source " + ds_name + " in EXPOSED_API.Methods with name " + name + " is not declared in INTERNAL_STRUCTURE.Data_Sources";
 					LOGGER.debug(warning);
 					context.addWarning(warning);
 					errorFound = true;
@@ -68,7 +68,7 @@ public class LogicalValidator implements Checker {
 		for (BsonValue tag : tags ) {
 			String name = tag.asDocument().getString("method_name").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in tags definition is not declared in EXPOSES_API.Methods" ;
+				warning = "Method " + name + " in INTERNAL_STRUCTURE.Overview.tags is not declared in EXPOSES_API.Methods" ;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -81,7 +81,7 @@ public class LogicalValidator implements Checker {
 		for (BsonValue o : output ) {
 			String name = o.asDocument().getString("method_name").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in Testing_Output_Data definition is not declared in EXPOSES_API.Methods";
+				warning = "Method " + name + " in INTERNAL_STRUCTURE.Testing_Output_Data is not declared in EXPOSES_API.Methods";
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -93,7 +93,7 @@ public class LogicalValidator implements Checker {
 		for (BsonValue dm_method : dm_methods) {
 			String name = dm_method.asDocument().getString("name").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in DATA_MANAGEMENT is not declared in EXPOSES_API.Methods" ;
+				warning = "Method " + name + " in DATA_MANAGEMENT.methods is not declared in EXPOSES_API.Methods" ;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -105,7 +105,7 @@ public class LogicalValidator implements Checker {
 		for (BsonValue ap_method : ap_methods ) {
 			String name = ap_method.asDocument().getString("name").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in ABSTRACT PROPERTIES is not declared in EXPOSES_API.Methods";
+				warning = "Method " + name + " in ABSTRACT_PROPERTIES.methods is not declared in EXPOSES_API.Methods";
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -121,7 +121,7 @@ public class LogicalValidator implements Checker {
 			BsonDocument d_infrastructure = infrastructure.asDocument();
 			String infra_name = d_infrastructure.getString("name").getValue();
 			if (!is.add(infra_name)) {
-				warning = "Duplicate infrastructure with name " + infra_name;
+				warning = "Duplicate COOKBOOK_APPENDIX.infrastructure with name " + infra_name;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -131,7 +131,7 @@ public class LogicalValidator implements Checker {
 			for (BsonValue resource : resources) {
 				String res_name = resource.asDocument().getString("name").getValue();
 				if (!rs.add(res_name)) {
-					warning = "Duplicate resource with name " + res_name + " of infrastructure with name " + infra_name;
+					warning = "Duplicate resource with name " + res_name + " in COOKBOOK_APPENDIX.infrastructure with name " + infra_name;
 					LOGGER.debug(warning);
 					context.addWarning(warning);
 					errorFound = true;
