@@ -46,7 +46,7 @@ public class RequestTransformer implements Transformer {
 			if (params.containsKey("section")) {
 				LOGGER.debug("Section parameter found");
 				Deque<String> qsections = params.get("section");
-				Deque<String> d = new ArrayDeque<>();
+				Deque<String> d = new ArrayDeque<String>();
 				
 				for(String qsection : qsections) {
 					String section = parseSection(qsection , context);
@@ -57,6 +57,11 @@ public class RequestTransformer implements Transformer {
 					}
 				}
 			}
+			
+			Deque<String> sortBy = params.containsKey("sort_by") ? context.getSortBy() : new ArrayDeque<String>();
+			sortBy.add("_id");
+			context.setSortBy(sortBy);
+			
 			
 			Deque<String> filter = context.getFilter();
 			if (filter!=null) 
@@ -100,6 +105,7 @@ public class RequestTransformer implements Transformer {
 	
 	
 	private void remove_id(BsonValue doc, RequestContext context) {
+		
 		BsonDocument docd = doc.asDocument();
 		if (docd.containsKey("_id")) {
 			docd.remove("_id");
@@ -113,14 +119,19 @@ public class RequestTransformer implements Transformer {
 	private String parseSection(String qsection , RequestContext context) {
 		
 		if (SECTIONS.contains(qsection)) return qsection;
+		
 		try {
+			
 		      int index = Integer.parseInt(qsection);
 		      return SECTIONS.get(index-1);
+		      
 		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			
 			String warning = "invalid section parameter";
 			LOGGER.debug(warning);
 			context.addWarning(warning);
 			return "";
+			
 		}
 	}
 }   
