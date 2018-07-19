@@ -1,9 +1,11 @@
 package gr.ntua.ditas.repositoryengine.restheartcustomization;
 
 import org.restheart.metadata.transformers.Transformer;
+import org.restheart.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 
@@ -32,6 +34,18 @@ public class RequestTransformer implements Transformer {
 			"EXPOSED_API"
 	);
 	
+    public static void escape(BsonDocument schema, boolean escapeDots) {
+        BsonValue escaped = JsonUtils.escapeKeys(schema, escapeDots);
+
+        if (escaped.isDocument()) {
+            List<String> keys = Lists.newArrayList(schema.keySet().iterator());
+
+            keys.stream().forEach(f -> schema.remove(f));
+
+            schema.putAll(escaped.asDocument());
+        }
+    }
+    
 	@Override
 	public void transform(HttpServerExchange exchange, RequestContext context, BsonValue contentToTransform,
 			BsonValue args) {
@@ -90,16 +104,26 @@ public class RequestTransformer implements Transformer {
 			if (contentToTransform.isDocument()) {
 				BsonDocument data = contentToTransform.asDocument();
 				if (data.containsKey("_etag")) data.remove("_etag");
+				escape(contentToTransform.asDocument(), false);
 			}	
+			
+			
+			
 		}else if (context.isPost()) {
 			LOGGER.debug("POST request");
 			
 			if (contentToTransform.isArray()) 
 				contentToTransform.asArray().forEach( 
-						doc -> remove_id(doc , context)
+						doc -> {
+							remove_id(doc , context);
+							escape(contentToTransform.asDocument(), true);
+						}
 				);
-			if (contentToTransform.isDocument()) 
+			if (contentToTransform.isDocument()) {
 				remove_id(contentToTransform , context);
+				escape(contentToTransform.asDocument(), true);
+			}
+			
 		}
 	}
 	
