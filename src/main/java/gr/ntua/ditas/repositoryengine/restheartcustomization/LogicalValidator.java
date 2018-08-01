@@ -22,7 +22,7 @@ public class LogicalValidator implements Checker {
 	@Override
 	public boolean check(HttpServerExchange exchange, RequestContext context, BsonDocument contentToCheck, BsonValue args) {
 		LOGGER.debug("Logical validator is started...");
-		LOGGER.debug(contentToCheck.toJson());
+		//LOGGER.debug(contentToCheck.toJson());
 		String warning;
 		boolean errorFound = false;
 		

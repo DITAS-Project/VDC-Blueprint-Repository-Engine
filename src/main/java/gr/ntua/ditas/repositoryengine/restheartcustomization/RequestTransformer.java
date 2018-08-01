@@ -10,12 +10,25 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 
 import io.undertow.server.HttpServerExchange;
+
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.bson.BsonDocument;
 import org.bson.BsonValue;
 import org.bson.Document;
@@ -124,6 +137,20 @@ public class RequestTransformer implements Transformer {
 				escape(contentToTransform.asDocument(), true);
 			}
 			
+		}else if (context.isDelete()) {
+			LOGGER.debug("DELETE request");
+			
+			String id = context.getDocumentId().asObjectId().getValue().toHexString();
+			HttpResponse response = elasticDeletion(id);
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (!(statusCode == HttpStatus.SC_NOT_FOUND || statusCode == HttpStatus.SC_OK)) {
+				exchange.setStatusCode(statusCode);
+				context.setInError(true);
+				context.setDocumentId(null);
+				context.setContent(new BsonDocument());
+				context.addWarning("Elastic Search Service is not available");
+				exchange.endExchange();
+			};
 		}
 	}
 	
@@ -157,5 +184,26 @@ public class RequestTransformer implements Transformer {
 			return "";
 			
 		}
+	}
+	
+	
+	private HttpResponse elasticDeletion(String id) {
+		
+		CredentialsProvider provider = new BasicCredentialsProvider();
+		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("publicUser", "Resolution");
+		provider.setCredentials(AuthScope.ANY, credentials);
+		
+		HttpClient httpClient = HttpClientBuilder.create()
+				.setDefaultCredentialsProvider(provider)
+				.build();
+		HttpResponse response;
+		try {
+			HttpDelete request = new HttpDelete("http://31.171.247.162:50014/ditas/blueprints/"+id);
+			response = httpClient.execute(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return response;
 	}
 }   
