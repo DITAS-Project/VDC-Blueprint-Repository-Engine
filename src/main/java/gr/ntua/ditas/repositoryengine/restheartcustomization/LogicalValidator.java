@@ -76,10 +76,17 @@ public class LogicalValidator implements Checker {
 		
 		LOGGER.debug("Check for invalid method_names of tags (4)...");
 		BsonArray tags = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Overview").getArray("tags");
+		Set<String> ts = new TreeSet<String>();
 		for (BsonValue tag : tags ) {
 			String name = tag.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
 				warning = "Method " + name + " in INTERNAL_STRUCTURE.Overview.tags is not declared in EXPOSES_API" ;
+				LOGGER.debug(warning);
+				context.addWarning(warning);
+				errorFound = true;
+			}
+			if (!ts.add(name)) {
+				warning = "Duplicate INTERNAL_STRUCTURE.Overview.tags with method_id " + name;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -89,6 +96,7 @@ public class LogicalValidator implements Checker {
 		
 		LOGGER.debug("Check for invalid method_names of testing_output_data (5)...");
 		BsonArray output = contentToCheck.getDocument("INTERNAL_STRUCTURE").getArray("Testing_Output_Data");
+		Set<String> tod = new TreeSet<String>();
 		for (BsonValue o : output ) {
 			String name = o.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
@@ -97,14 +105,27 @@ public class LogicalValidator implements Checker {
 				context.addWarning(warning);
 				errorFound = true;
 			}
+			if (!tod.add(name)) {
+				warning = "Duplicate INTERNAL_STRUCTURE.Testing_Output_Data with method_id " + name;
+				LOGGER.debug(warning);
+				context.addWarning(warning);
+				errorFound = true;
+			}
 		}
 		
 		LOGGER.debug("Check for invalid names of DATA_MANAGEMENT.methods (6)...");
 		BsonArray dm = contentToCheck.getArray("DATA_MANAGEMENT");
+		Set<String> dm_ms = new TreeSet<String>();
 		for (BsonValue dm_method : dm) {
 			String name = dm_method.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
 				warning = "Method  " + name + " in DATA_MANAGEMENT is not declared in EXPOSES_API" ;
+				LOGGER.debug(warning);
+				context.addWarning(warning);
+				errorFound = true;
+			}
+			if (!dm_ms.add(name)) {
+				warning = "Duplicate DATA_MANAGEMENT.methods with method_id " + name;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
