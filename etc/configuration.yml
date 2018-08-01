@@ -137,7 +137,9 @@ metadata-named-singletons:
           class: org.restheart.metadata.checkers.ContentSizeChecker
         - name: logicalValidator
           class: gr.ntua.ditas.repositoryengine.restheartcustomization.LogicalValidator
-
+        - name: elasticInsertionChecker
+          class: gr.ntua.ditas.repositoryengine.restheartcustomization.ElasticInsertionChecker
+          
     # Checkers group used by handlers:
     # org.restheart.handlers.metadata.RequestTransformerMetadataHandler and
     # org.restheart.handlers.metadata.ResponseTransformerMetadataHandler    
