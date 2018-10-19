@@ -56,6 +56,9 @@ In order to work, this component requires the following elements to be installed
 
 * jre 8
 
+## Instalation
+* clone this repository.
+
 ## Execution
 Application requires two configuration files : 
 * configuration.yml 
@@ -65,3 +68,6 @@ To launch this component, execute the following command:
 ```
 $ java -jar target/vdc-repository-engine-0.0.1-SNAPSHOT.jar etc/configuration.yml
 ```
+
+## Acknowledgements
+This is being developed for the DITAS Project: https://www.ditas-project.eu/
