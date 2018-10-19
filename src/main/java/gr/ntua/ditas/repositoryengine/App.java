@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with VDC-Blueprint-Repository-Engine.  
  * If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * VDC-Blueprint-Repository-Engine is being developed for the
+ * DITAS Project: https://www.ditas-project.eu/
  */
 package gr.ntua.ditas.repositoryengine;
 
