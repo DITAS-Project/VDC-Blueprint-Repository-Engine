@@ -74,7 +74,7 @@ In order to work, this component requires the following elements to be installed
 
 * jre 8
 
-## Instalation
+## Installation
 * clone this repository.
 
 ## Execution
