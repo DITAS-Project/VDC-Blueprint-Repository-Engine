@@ -33,5 +33,5 @@ sudo docker rm --force vdc-blueprint-repository-engine || true
 sudo docker pull ditas/vdc-blueprint-repository-engine:latest
 
 # SET THE PORT MAPPING
-sudo docker run -p 50009:8080 -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
+sudo docker run -p 50009:8080 --restart unless-stopped -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
 ENDSSH
