@@ -746,14 +746,6 @@ paths:
                         - bloodTestSource
                         - patientBiographicalData
       responses:
-        '201':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              blueprint_id:
-                type: array
-                items:
-                  type: string
-            required:
-              - blueprint_id
+        '401':
+          description: Unauthorized
+          
