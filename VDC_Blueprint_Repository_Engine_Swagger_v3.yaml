@@ -63,7 +63,9 @@ paths:
                         - profile
                 Data_Sources:
                   - id: patientBiographicalData
-                    description: Relational database containing biographical data for the hospital patients
+                    description: >-
+                      Relational database containing biographical data for the
+                      hospital patients
                     class: relational database
                     type: MySQL
                 Flow:
@@ -83,7 +85,10 @@ paths:
                   '/patient/{SSN}':
                     get:
                       summary: Get patient's biographical data
-                      description: 'This method returns the biographical data for the specified patient (identified via SSN), to be used by medical doctors'
+                      description: >-
+                        This method returns the biographical data for the
+                        specified patient (identified via SSN), to be used by
+                        medical doctors
                       operationId: getPatientBiographicalData
                       parameters:
                         - name: SSN
@@ -113,6 +118,46 @@ paths:
                   type: string
             required:
               - blueprint_id
+      security:
+        - basicAuth: []
+  '/blueprints/{blueprint_id}':
+    get:
+      description: Blueprint Retrieval by id
+      produces:
+        - application/json
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+          x-example: 5be5993b16af09d17d608608
+        - name: section
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+      security:
+        - basicAuth: []
+    delete:
+      description: Blueprint Deletion by id
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+          x-example: 5c49a32a763d081d264b20e0
+      responses:
+        '204':
+          description: successful operation
+        '404':
+          description: Blueprint not found
       security:
         - basicAuth: []
 securityDefinitions:
