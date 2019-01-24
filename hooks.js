@@ -14,7 +14,7 @@ after("/blueprints > POST > 201 > application/json", function (transaction) {
 
 before("/blueprints/{blueprint_id} > DELETE > 204", function (transaction) {
   //reusing data from previous response here
-  var blueprintId = JSON.parse(responseStash['/blueprints > POST > 201 > application/json'])['id'];
+  var blueprintId = JSON.parse(responseStash['/blueprints > POST > 201 > application/json'])['blueprint_id'];
 
   //replacing id in URL with stashed id from previous response
   var url = transaction.fullPath;
