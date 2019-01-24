@@ -71,7 +71,7 @@ pipeline {
 	    agent any
 	    steps {
 	      sh 'sleep 10'    
-	      sh 'dredd VDC_Blueprint_Repository_Engine_Swagger_v3.yaml http://31.171.247.162:50009 -u Basic cHVibGljVXNlcjpCbHVlcHJpbnQ='
+	      sh 'dredd VDC_Blueprint_Repository_Engine_Swagger_v3.yaml http://31.171.247.162:50009 --user publicUser:Blueprint'
 	    }
         } 
     }
