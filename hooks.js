@@ -7,7 +7,7 @@ var responseStash = {};
 after("/blueprints > POST > 201 > application/json", function (transaction) {
 
   // saving HTTP response to the stash
-  responseStash[transaction.name] = transaction.real;
+  responseStash[transaction.name] = transaction.real.body;
   console.log(responseStash[transaction.name]);
 });
 
