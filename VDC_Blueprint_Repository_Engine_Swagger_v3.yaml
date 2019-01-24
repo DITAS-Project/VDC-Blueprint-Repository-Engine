@@ -160,8 +160,7 @@ paths:
           schema:
             type: object
             example:
-              INTERNAL_STRUCTURE.Overview:
-                name: new_name
+              INTERNAL_STRUCTURE.Overview.name: new_name
       responses:
         '200':
           description: successful operation
