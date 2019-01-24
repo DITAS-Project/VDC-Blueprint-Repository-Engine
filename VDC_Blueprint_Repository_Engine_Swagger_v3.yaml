@@ -173,7 +173,7 @@ paths:
           in: path
           required: true
           type: string
-          x-example: 5c49a32a763d081d264b20e0
+          x-example: 5c49caf3763d081d264b2637
       responses:
         '204':
           description: successful operation
