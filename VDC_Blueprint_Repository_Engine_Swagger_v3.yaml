@@ -143,6 +143,28 @@ paths:
           description: successful operation
           schema:
             type: object
+    patch:
+      description: Blueprint Update by id
+      consumes:
+        - application/json
+      parameters:
+        - name: blueprint_id
+          in: path
+          required: true
+          type: string
+          x-example: 5c49caf3763d081d264b2637
+        - name: FieldsToBeUpdated
+          in: body
+          description: all the fields to be updated
+          required: true
+          schema:
+            type: object
+            example:
+              INTERNAL_STRUCTURE.Overview:
+                name: new_name
+      responses:
+        '200':
+          description: successful operation
       security:
         - basicAuth: []
     delete:
@@ -156,8 +178,6 @@ paths:
       responses:
         '204':
           description: successful operation
-        '404':
-          description: Blueprint not found
       security:
         - basicAuth: []
 securityDefinitions:
