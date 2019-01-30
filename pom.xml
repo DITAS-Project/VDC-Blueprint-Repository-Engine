@@ -27,7 +27,7 @@
     <dependency>
             <groupId>org.restheart</groupId>
             <artifactId>restheart</artifactId>
-            <version>3.7.0</version>
+            <version>3.2.2</version>
             <scope>compile</scope>
      </dependency>
      <dependency>
