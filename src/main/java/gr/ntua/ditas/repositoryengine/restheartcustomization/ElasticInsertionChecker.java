@@ -75,11 +75,11 @@ public class ElasticInsertionChecker implements Checker {
         
         }
 		
-		System.out.println(props.getProperty("stagingMachine"));
+		String ip = props.getProperty("stagingMachine");
 		
 	   
 		try {
-			HttpPut request = new HttpPut("http://31.171.247.162:50014/ditas/blueprints/"+id);
+			HttpPut request = new HttpPut("http://"+ip+":50014/ditas/blueprints/"+id);
 			StringEntity params =new StringEntity(elastic_doc.toJson());
 			request.addHeader("content-type", "application/json");
 			request.setEntity(params);
