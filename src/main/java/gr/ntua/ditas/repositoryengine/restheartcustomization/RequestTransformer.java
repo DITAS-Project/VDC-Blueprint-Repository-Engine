@@ -32,11 +32,13 @@ import com.mongodb.client.MongoCollection;
 import io.undertow.server.HttpServerExchange;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -216,9 +218,23 @@ public class RequestTransformer implements Transformer {
 		HttpClient httpClient = HttpClientBuilder.create()
 				.setDefaultCredentialsProvider(provider)
 				.build();
+				
+		String resourceName = "config.properties";
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Properties props = new Properties();
+        try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+            props.load(resourceStream);
+        }
+		catch(IOException ex){
+        
+        }
+		
+		String ip = props.getProperty("stagingMachine");		
+				
+				
 		HttpResponse response;
 		try {
-			HttpDelete request = new HttpDelete("http://31.171.247.162:50014/ditas/blueprints/"+id);
+			HttpDelete request = new HttpDelete("http://"+ip+":50014/ditas/blueprints/"+id);
 			response = httpClient.execute(request);
 		} catch (IOException e) {
 			e.printStackTrace();
