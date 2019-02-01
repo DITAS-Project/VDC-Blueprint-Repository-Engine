@@ -71,6 +71,9 @@ public class ElasticInsertionChecker implements Checker {
         try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
             props.load(resourceStream);
         }
+		catch(IOException ex){
+        
+        }
 		
 		System.out.println(props.getProperty("stagingMachine"));
 		
