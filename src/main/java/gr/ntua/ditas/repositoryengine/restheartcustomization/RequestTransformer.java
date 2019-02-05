@@ -229,7 +229,7 @@ public class RequestTransformer implements Transformer {
         
         }
 		
-		String ip = props.getProperty("stagingMachine");		
+		String ip = props.getProperty("elastic.search.host");		
 				
 				
 		HttpResponse response;

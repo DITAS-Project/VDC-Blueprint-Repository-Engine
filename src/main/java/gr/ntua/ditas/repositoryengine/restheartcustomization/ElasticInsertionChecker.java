@@ -75,7 +75,7 @@ public class ElasticInsertionChecker implements Checker {
         
         }
 		
-		String ip = props.getProperty("stagingMachine");
+		String ip = props.getProperty("elastic.search.host");
 		
 	   
 		try {
