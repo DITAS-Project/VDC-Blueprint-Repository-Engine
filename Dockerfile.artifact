@@ -4,4 +4,4 @@ COPY etc/configuration.yml /app/configuration.yml
 COPY etc/security.yml /app/security.yml
 COPY entrypoint.sh /entrypoint.sh
 EXPOSE 8080
-ENTRYPOINT ["chmod +x /entrypoint.sh"]
+ENTRYPOINT ["chmod +x entrypoint.sh"]
