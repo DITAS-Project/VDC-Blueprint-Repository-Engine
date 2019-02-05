@@ -86,7 +86,7 @@ use-embedded-keystore: true
 #
 # More information at http://api.mongodb.org/java/current/com/mongodb/MongoClientURI.html
 
-mongo-uri: mongodb://publicMongoUser:Blueprint@31.171.247.162:50010/?authSource=admin
+mongo-uri: mongodb://publicMongoUser:Blueprint@X.X.X.X:50010/?authSource=admin
 
 # Use mongo-mounts to bind URls to mongodb resources using the out-of-the-box URL rewrite feature.
 mongo-mounts:
