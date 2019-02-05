@@ -32,6 +32,11 @@ sudo docker stop --time 20 vdc-blueprint-repository-engine || true
 sudo docker rm --force vdc-blueprint-repository-engine || true
 sudo docker pull ditas/vdc-blueprint-repository-engine:latest
 
-# SET THE PORT MAPPING
-sudo docker run -p 50009:8080 --restart unless-stopped -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
+# Get the host IP
+HOST_IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
+
+
+
+# SET THE PORT MAPPING and pass the host IP via the environmental variable "DOCKER_HOST_IP"
+sudo docker run -p 50009:8080 -e DOCKER_HOST_IP=$HOST_IP --restart unless-stopped -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
 ENDSSH
