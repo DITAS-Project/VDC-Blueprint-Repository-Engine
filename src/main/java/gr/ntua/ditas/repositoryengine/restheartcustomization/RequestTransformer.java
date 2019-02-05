@@ -56,6 +56,15 @@ import org.bson.BsonValue;
 import org.bson.Document;
 import org.restheart.handlers.RequestContext;
 import org.restheart.db.MongoDBClientSingleton;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.logging.Level;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
   
 public class RequestTransformer implements Transformer {
 	private static final Logger LOGGER = LoggerFactory.getLogger("org.restheart.metadata.transformers.Transformer");
@@ -219,17 +228,28 @@ public class RequestTransformer implements Transformer {
 				.setDefaultCredentialsProvider(provider)
 				.build();
 				
-		String resourceName = "config.properties";
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        Properties props = new Properties();
-        try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-            props.load(resourceStream);
-        }
-		catch(IOException ex){
+		JSONParser parser = new JSONParser();    
         
-        }
-		
-		String ip = props.getProperty("elastic.search.host");		
+        File f = new File("app/config.json");
+        FileReader conf = null;
+            try {
+                conf = new FileReader(f);
+            } catch (FileNotFoundException ex) {
+                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         
+        
+        JSONObject obj = new JSONObject();
+            try {
+                obj = (JSONObject) parser.parse(conf);
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        String ip = obj.get("elastic_search_host").toString();	
 				
 				
 		HttpResponse response;
