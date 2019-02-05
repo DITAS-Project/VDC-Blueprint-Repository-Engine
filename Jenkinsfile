@@ -73,6 +73,16 @@ pipeline {
 	      sh 'sleep 10'    
 	      sh 'dredd VDC_Blueprint_Repository_Engine_Swagger_v3.yaml http://31.171.247.162:50009 --hookfiles=./hooks.js --user publicUser:Blueprint'
 	    }
-        } 
+        }
+    stage('Deployment in Production') {
+        agent any
+        steps {
+        // Production environment: 178.22.69.83
+        // Private key for ssh: /opt/keypairs/ditas-testbed-keypair.pem
+        // Call the deployment script
+        sh './jenkins/deploy/deploy-production.sh'
+    }
+    }
+		
     }
 }
