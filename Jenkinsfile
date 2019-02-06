@@ -1,5 +1,3 @@
-// Jenkins CI manual can be found here (CI_manual_v2): https://repository.atosresearch.eu/index.php/apps/files/?dir=%2FDITAS%2FWP5%20case%20studies%2FIntegration
-// Your repo link in Jenkins: http://178.22.71.23:8080/job/VDC-Blueprint-Repository-Engine/job/master/
 pipeline {
     agent none
     stages {
@@ -27,7 +25,7 @@ pipeline {
                 }
             }
         }
-        stage('Image creation') {
+        stage('Staging image creation') {
             agent any
             options {
                 skipDefaultCheckout true
@@ -37,7 +35,7 @@ pipeline {
                 echo 'Creating the image...'
 
                 // This will search for a Dockerfile.artifact in the working directory and build the image to the local repository
-                sh "docker build -t \"ditas/vdc-blueprint-repository-engine\" -f Dockerfile.artifact ."
+                sh "docker build -t \"ditas/vdc-blueprint-repository-engine:staging\" -f Dockerfile.artifact ."
                 echo "Done"
 		    
                 // Get the password from a file. This reads the file from the host, not the container. Slaves already have the password in there.
@@ -51,38 +49,45 @@ pipeline {
                 sh "docker login -u ditasgeneric -p ${password}"
                 echo "Done"
 
-                echo "Pushing the image ditas/vdc-blueprint-repository-engine:latest..."
-                sh "docker push ditas/vdc-blueprint-repository-engine:latest"
+                echo "Pushing the image ditas/vdc-blueprint-repository-engine:staging..."
+                sh "docker push ditas/vdc-blueprint-repository-engine:staging"
                 echo "Done "
             }
         }
-        stage('Image deploy') {
+        stage('Deployment in Staging') {
             agent any
             options {
                 // Don't need to checkout Git again
                 skipDefaultCheckout true
             }
             steps {
-		// Deploy to Staging environment calling the deployment script
+		        // Deploy to Staging environment calling the deployment script
                 sh './jenkins/deploy/deploy-staging.sh'
             }
         }
-	stage('API validation') {
-	    agent any
-	    steps {
-	      sh 'sleep 10'    
-	      sh 'dredd VDC_Blueprint_Repository_Engine_Swagger_v3.yaml http://31.171.247.162:50009 --hookfiles=./hooks.js --user publicUser:Blueprint'
-	    }
-        }
-    stage('Deployment in Production') {
-        agent any
-        steps {
-        // Production environment: 178.22.69.83
-        // Private key for ssh: /opt/keypairs/ditas-testbed-keypair.pem
-        // Call the deployment script
-        sh './jenkins/deploy/deploy-production.sh'
-    }
-    }
+	    stage('Dredd API validation') {
+	        agent any
+	        steps {
+	            sh 'sleep 10'    
+	            sh 'dredd VDC_Blueprint_Repository_Engine_Swagger_v3.yaml http://31.171.247.162:50009 --hookfiles=./hooks.js --user publicUser:Blueprint'
+	        }
+        }	
+	    stage('Production image creation') {
+            steps {
+                // Change the tag from staging to production 
+                sh "docker tag ditas/vdc-blueprint-repository-engine:staging ditas/vdc-blueprint-repository-engine:production"
+                sh "docker push ditas/vdc-blueprint-repository-engine:production"
+            }
+        }	
 		
+        stage('Deployment in Production') {
+            agent any
+            steps {
+                // Production environment: 178.22.69.83
+                // Private key for ssh: /opt/keypairs/ditas-testbed-keypair.pem
+                // Call the deployment script
+                sh './jenkins/deploy/deploy-production.sh'
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ ssh -i /opt/keypairs/ditas-testbed-keypair.pem cloudsigma@31.171.247.162 << 'END
 # || true - "docker stop" failt with exit status 1 if image doen't exists, what makes the Pipeline fail. the "|| true" forces the command to exit with 0.
 sudo docker stop --time 20 vdc-blueprint-repository-engine || true
 sudo docker rm --force vdc-blueprint-repository-engine || true
-sudo docker pull ditas/vdc-blueprint-repository-engine:latest
+sudo docker pull ditas/vdc-blueprint-repository-engine:staging
 
 # Get the host IP
 HOST_IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
@@ -38,5 +38,5 @@ HOST_IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
 
 # SET THE PORT MAPPING and pass the host IP via the environmental variable "DOCKER_HOST_IP"
-sudo docker run -p 50009:8080 -e DOCKER_HOST_IP=$HOST_IP --restart unless-stopped -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:latest
+sudo docker run -p 50009:8080 -e DOCKER_HOST_IP=$HOST_IP --restart unless-stopped -d --name vdc-blueprint-repository-engine ditas/vdc-blueprint-repository-engine:staging
 ENDSSH
