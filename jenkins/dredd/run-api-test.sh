@@ -6,7 +6,7 @@
 COMPONENT_URL="http://31.171.247.162:50009"
 
 # TO CHANGE: This line should point to the yaml file of your respository of your api definition
-YAML_FILE="./VDC_Blueprint_Repository_Engine_Swagger_v3.yaml"
+YAML_FILE="VDC_Blueprint_Repository_Engine_Swagger_v3.yaml"
 
 attempts=0
 until $(curl --output /dev/null --silent --head --fail $COMPONENT_URL); do
