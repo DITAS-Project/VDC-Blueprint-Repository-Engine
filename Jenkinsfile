@@ -73,7 +73,8 @@ pipeline {
 	        }
         }	
 	    stage('Production image creation') {
-            steps {
+            agent any
+			steps {
                 // Change the tag from staging to production 
                 sh "docker tag ditas/vdc-blueprint-repository-engine:staging ditas/vdc-blueprint-repository-engine:production"
                 sh "docker push ditas/vdc-blueprint-repository-engine:production"
