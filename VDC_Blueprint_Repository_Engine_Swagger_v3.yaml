@@ -130,7 +130,7 @@ paths:
           in: path
           required: true
           type: string
-          x-example: 5be5993b16af09d17d608608
+          x-example: 5c49caf3763d081d264b2637
         - name: section
           in: query
           required: false
