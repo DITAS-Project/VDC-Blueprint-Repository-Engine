@@ -46,7 +46,7 @@ public class LogicalValidator implements Checker {
 		String warning;
 		boolean errorFound = false;
 		
-		LOGGER.debug("Check for duplicate data sources (1)...");
+		LOGGER.debug("Check for duplicate data sources");
 		BsonArray data_sources = contentToCheck.getDocument("INTERNAL_STRUCTURE").getArray("Data_Sources");
 		Set<String> ds = new TreeSet<String>();
 		for (BsonValue data_source : data_sources) {
@@ -59,8 +59,8 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for duplicate api methods (2)...");
-		LOGGER.debug("...and for invalid data sources inside api methods (3)...");
+		LOGGER.debug("Check for duplicate api methods...");
+		LOGGER.debug("...and for invalid data sources inside api methods");
 		BsonDocument pathsdoc = contentToCheck.getDocument("EXPOSED_API").getDocument("paths");
 		Iterator<String> paths = pathsdoc.keySet().iterator();
 		Set<String> ms = new TreeSet<String>();
@@ -93,14 +93,13 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		
-		LOGGER.debug("Check for invalid method_names of tags (4)...");
+		LOGGER.debug("Check for invalid method_names of tags");
 		BsonArray tags = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Overview").getArray("tags");
 		Set<String> ts = new TreeSet<String>();
 		for (BsonValue tag : tags ) {
 			String name = tag.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in INTERNAL_STRUCTURE.Overview.tags is not declared in EXPOSES_API" ;
+				warning = "Method " + name + " in INTERNAL_STRUCTURE.Overview.tags is not declared in EXPOSED_API" ;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -113,14 +112,32 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
+		LOGGER.debug("Check for invalid method_names of Methods_Input");
+		BsonArray meths = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Methods_Input").getArray("Methods");
+		Set<String> methods = new TreeSet<String>();
+		for (BsonValue meth : meths ) {
+			String name = meth.asDocument().getString("method_id").getValue();
+			if (!ms.contains(name)) {
+				warning = "Method " + name + " in INTERNAL_STRUCTURE.Methods_Input.Methods is not declared in EXPOSED_API" ;
+				LOGGER.debug(warning);
+				context.addWarning(warning);
+				errorFound = true;
+			}
+			if (!methods.add(name)) {
+				warning = "Duplicate INTERNAL_STRUCTURE.Methods_Input.Methods with method_id " + name;
+				LOGGER.debug(warning);
+				context.addWarning(warning);
+				errorFound = true;
+			}
+		}
 		
-		LOGGER.debug("Check for invalid method_names of testing_output_data (5)...");
+		LOGGER.debug("Check for invalid method_names of Testing_Output_Data");
 		BsonArray output = contentToCheck.getDocument("INTERNAL_STRUCTURE").getArray("Testing_Output_Data");
 		Set<String> tod = new TreeSet<String>();
 		for (BsonValue o : output ) {
 			String name = o.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method " + name + " in INTERNAL_STRUCTURE.Testing_Output_Data is not declared in EXPOSES_API";
+				warning = "Method " + name + " in INTERNAL_STRUCTURE.Testing_Output_Data is not declared in EXPOSED_API";
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
@@ -133,13 +150,13 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for invalid names of DATA_MANAGEMENT.methods (6)...");
+		LOGGER.debug("Check for invalid names of DATA_MANAGEMENT.methods");
 		BsonArray dm = contentToCheck.getArray("DATA_MANAGEMENT");
 		Set<String> dm_ms = new TreeSet<String>();
 		for (BsonValue dm_method : dm) {
 			String name = dm_method.asDocument().getString("method_id").getValue();
 			if (!ms.contains(name)) {
-				warning = "Method  " + name + " in DATA_MANAGEMENT is not declared in EXPOSES_API" ;
+				warning = "Method  " + name + " in DATA_MANAGEMENT is not declared in EXPOSED_API" ;
 				LOGGER.debug(warning);
 				context.addWarning(warning);
 				errorFound = true;
