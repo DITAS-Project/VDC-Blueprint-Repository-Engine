@@ -112,25 +112,38 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for invalid method_names of Methods_Input");
+		LOGGER.debug("Check for invalid method_names of Methods_Input...");
+		LOGGER.debug("...and for invalid data sources inside Methods_Input");
 		if (contentToCheck.getDocument("INTERNAL_STRUCTURE").containsKey("Methods_Input")) {
-		BsonArray meths = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Methods_Input").getArray("Methods");
-		Set<String> methods = new TreeSet<String>();
-		for (BsonValue meth : meths ) {
-			String name = meth.asDocument().getString("method_id").getValue();
-			if (!ms.contains(name)) {
-				warning = "Method " + name + " in INTERNAL_STRUCTURE.Methods_Input.Methods is not declared in EXPOSED_API" ;
-				LOGGER.debug(warning);
-				context.addWarning(warning);
-				errorFound = true;
+			BsonArray meths = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Methods_Input").getArray("Methods");
+			Set<String> methods = new TreeSet<String>();
+			for (BsonValue meth : meths ) {
+				String name = meth.asDocument().getString("method_id").getValue();
+				if (!ms.contains(name)) {
+					warning = "Method " + name + " in INTERNAL_STRUCTURE.Methods_Input.Methods is not declared in EXPOSED_API" ;
+					LOGGER.debug(warning);
+					context.addWarning(warning);
+					errorFound = true;
+				}
+				if (!methods.add(name)) {
+					warning = "Duplicate INTERNAL_STRUCTURE.Methods_Input.Methods with method_id " + name;
+					LOGGER.debug(warning);
+					context.addWarning(warning);
+					errorFound = true;
+				}
+				if (meth.asDocument().containsKey("dataSources")) {
+					BsonArray sources = meth.asDocument().getArray("dataSources");
+                    for (BsonValue src : sources ) { 
+                        String sourceid = src.asDocument().getString("dataSource_id").getValue();
+                        if (!ds.contains(sourceid)) {
+							warning = "Data source " + sourceid + " in INTERNAL_STRUCTURE.Methods_Input.Methods.dataSources is not declared in INTERNAL_STRUCTURE.Data_Sources";
+							LOGGER.debug(warning);
+							context.addWarning(warning);
+							errorFound = true;
+						}                
+                    }
+				}
 			}
-			if (!methods.add(name)) {
-				warning = "Duplicate INTERNAL_STRUCTURE.Methods_Input.Methods with method_id " + name;
-				LOGGER.debug(warning);
-				context.addWarning(warning);
-				errorFound = true;
-			}
-		}
 		}
 		
 		LOGGER.debug("Check for invalid method_names of Testing_Output_Data");
@@ -193,5 +206,4 @@ public class LogicalValidator implements Checker {
     	return !(CheckersUtils.isBulkRequest(context)
                 && getPhase(context) == PHASE.AFTER_WRITE);
     }
-
 }
