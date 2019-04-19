@@ -75,7 +75,9 @@ paths:
                     zip_data: 'http://localhost:8080'
               DATA_MANAGEMENT: []
               ABSTRACT_PROPERTIES: []
-              COOKBOOK_APPENDIX: {}
+              COOKBOOK_APPENDIX:
+                infrastructure: []
+                name: ''
               EXPOSED_API:
                 openapi: 3.0.1
                 info:
