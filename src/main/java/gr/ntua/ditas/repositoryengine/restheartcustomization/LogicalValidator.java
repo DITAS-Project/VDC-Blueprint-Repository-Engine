@@ -113,6 +113,7 @@ public class LogicalValidator implements Checker {
 		}
 		
 		LOGGER.debug("Check for invalid method_names of Methods_Input");
+		if (contentToCheck.getDocument("INTERNAL_STRUCTURE").containsKey("Methods_Input")) {
 		BsonArray meths = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Methods_Input").getArray("Methods");
 		Set<String> methods = new TreeSet<String>();
 		for (BsonValue meth : meths ) {
@@ -129,6 +130,7 @@ public class LogicalValidator implements Checker {
 				context.addWarning(warning);
 				errorFound = true;
 			}
+		}
 		}
 		
 		LOGGER.debug("Check for invalid method_names of Testing_Output_Data");
