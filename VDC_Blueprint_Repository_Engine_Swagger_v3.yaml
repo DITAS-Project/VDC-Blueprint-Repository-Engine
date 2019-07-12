@@ -76,8 +76,11 @@ paths:
               DATA_MANAGEMENT: []
               ABSTRACT_PROPERTIES: []
               COOKBOOK_APPENDIX:
-                infrastructure: []
-                name: ''
+                Resources:
+                    infrastructures: []
+                    name: ''
+                Deployment:
+                    id: ''
               EXPOSED_API:
                 openapi: 3.0.1
                 info:
