@@ -220,41 +220,50 @@ public class RequestTransformer implements Transformer {
 	
 	private HttpResponse elasticDeletion(String id) {
 		
-		CredentialsProvider provider = new BasicCredentialsProvider();
-		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("publicUser", "Resolution");
-		provider.setCredentials(AuthScope.ANY, credentials);
-		
-		HttpClient httpClient = HttpClientBuilder.create()
-				.setDefaultCredentialsProvider(provider)
-				.build();
-				
-		JSONParser parser = new JSONParser();    
-        
-        File f = new File("app/config.json");
-        FileReader conf = null;
-            try {
-                conf = new FileReader(f);
-            } catch (FileNotFoundException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            }
-         
-        
-        JSONObject obj = new JSONObject();
-            try {
-                obj = (JSONObject) parser.parse(conf);
-            } catch (IOException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        
-        String ip = obj.get("elastic_search_host").toString();	
+		JSONParser parser = new JSONParser();
+
+		File f = new File("app/config.json");
+		FileReader conf = null;
+		try {
+			conf = new FileReader(f);
+		} catch (FileNotFoundException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+
+		JSONObject obj = new JSONObject();
+		try {
+			obj = (JSONObject) parser.parse(conf);
+		} catch (IOException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (ParseException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+
+		String Esip = obj.get("elastic_search_host").toString();
+		String Esauth = obj.get("elastic_search_auth").toString();
+		String Esuser = obj.get("elastic_search_user").toString();
+		String Espass = obj.get("elastic_search_pass").toString();
+		String Esindex = obj.get("elastic_search_index").toString();
+
+		HttpClient httpClient;
+		if(Esauth.equals("basic")) {
+			CredentialsProvider provider = new BasicCredentialsProvider();
+			UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(Esuser, Espass);
+			provider.setCredentials(AuthScope.ANY, credentials);
+			httpClient=HttpClientBuilder.create()
+					.setDefaultCredentialsProvider(provider)
+					.build();
+		}else{
+			httpClient=HttpClientBuilder.create()
+					.build();
+		}
 				
 				
 		HttpResponse response;
 		try {
-			HttpDelete request = new HttpDelete("http://"+ip+":50014/ditas/blueprints/"+id);
+			HttpDelete request = new HttpDelete("http://"+Esip+":50014/"+Esindex+"/"+id);
 			response = httpClient.execute(request);
 		} catch (IOException e) {
 			e.printStackTrace();

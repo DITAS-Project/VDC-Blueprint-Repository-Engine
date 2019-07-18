@@ -58,6 +58,34 @@ public class ElasticInsertionChecker implements Checker {
 	
 	@Override
 	public boolean check(HttpServerExchange exchange, RequestContext context, BsonDocument contentToCheck, BsonValue args) {
+
+		JSONParser parser = new JSONParser();
+
+		File f = new File("app/config.json");
+		FileReader conf = null;
+		try {
+			conf = new FileReader(f);
+		} catch (FileNotFoundException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+
+		JSONObject obj = new JSONObject();
+		try {
+			obj = (JSONObject) parser.parse(conf);
+		} catch (IOException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (ParseException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+
+		String Esip = obj.get("elastic_search_host").toString();
+		String Esauth = obj.get("elastic_search_auth").toString();
+		String Esuser = obj.get("elastic_search_user").toString();
+		String Espass = obj.get("elastic_search_pass").toString();
+		String Esindex = obj.get("elastic_search_index").toString();
+
 		LOGGER.debug("ElasticInsertionChecker is started...");
 		
 		String id = contentToCheck.getObjectId("_id").getValue().toHexString();
@@ -65,46 +93,21 @@ public class ElasticInsertionChecker implements Checker {
 		elastic_doc.remove("name");
 		LOGGER.debug("blueprint for elastic : "+elastic_doc.toJson());
 		
-		CredentialsProvider provider = new BasicCredentialsProvider();
-		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("publicUser", "Resolution");
-		provider.setCredentials(AuthScope.ANY, credentials);
-		
-		
-		HttpClient httpClient = HttpClientBuilder.create()
-				.setDefaultCredentialsProvider(provider)
-				.build();
-		
-		
-		
-		JSONParser parser = new JSONParser();    
-        
-        File f = new File("app/config.json");
-        FileReader conf = null;
-            try {
-                conf = new FileReader(f);
-            } catch (FileNotFoundException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            }
-         
-        
-        JSONObject obj = new JSONObject();
-            try {
-                obj = (JSONObject) parser.parse(conf);
-            } catch (IOException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
-                java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        
-        String ip = obj.get("elastic_search_host").toString();
-		
-		
-		
-		
+		HttpClient httpClient;
+		if(Esauth.equals("basic")) {
+			CredentialsProvider provider = new BasicCredentialsProvider();
+			UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(Esuser, Espass);
+			provider.setCredentials(AuthScope.ANY, credentials);
+			httpClient=HttpClientBuilder.create()
+					.setDefaultCredentialsProvider(provider)
+					.build();
+		}else{
+			httpClient=HttpClientBuilder.create()
+					.build();
+		}
 	   
 		try {
-			HttpPut request = new HttpPut("http://"+ip+":50014/ditas/blueprints/"+id);
+			HttpPut request = new HttpPut("http://"+Esip+":50014/"+Esindex+"/"+id);
 			StringEntity params =new StringEntity(elastic_doc.toJson());
 			request.addHeader("content-type", "application/json");
 			request.setEntity(params);

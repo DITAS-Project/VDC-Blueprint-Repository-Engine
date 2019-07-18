@@ -1,3 +1,7 @@
 {
-   "elastic_search_host":"X.X.X.X"
+   "elastic_search_host":"X.X.X.X",
+   "elastic_search_auth":"basic",
+   "elastic_search_user":"admin",
+   "elastic_search_pass":"ditasditas",
+   "elastic_search_index":"ditas.blueprints"
 }
