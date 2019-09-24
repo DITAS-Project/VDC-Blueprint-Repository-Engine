@@ -80,7 +80,7 @@ public class LogicalValidator implements Checker {
 					context.addWarning(warning);
 					errorFound = true;
 				}
-				BsonArray method_ds = method.getArray("x-data-sources");
+				/*BsonArray method_ds = method.getArray("x-data-sources");
 				for (BsonValue data_source : method_ds) {
 					String ds_id = data_source.asString().getValue();
 					if (!ds.contains(ds_id)) {
@@ -89,11 +89,11 @@ public class LogicalValidator implements Checker {
 						context.addWarning(warning);
 						errorFound = true;
 					}
-				}
+				}*/
 			}
 		}
 		
-		LOGGER.debug("Check for invalid method_names of tags");
+		LOGGER.debug("Check for invalid method_ids of tags");
 		BsonArray tags = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Overview").getArray("tags");
 		Set<String> ts = new TreeSet<String>();
 		for (BsonValue tag : tags ) {
@@ -112,7 +112,7 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for invalid method_names of Methods_Input...");
+		LOGGER.debug("Check for invalid method_ids of Methods_Input...");
 		LOGGER.debug("...and for invalid data sources inside Methods_Input");
 		if (contentToCheck.getDocument("INTERNAL_STRUCTURE").containsKey("Methods_Input")) {
 			BsonArray meths = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Methods_Input").getArray("Methods");
@@ -146,7 +146,7 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for invalid method_names of Testing_Output_Data");
+		LOGGER.debug("Check for invalid method_ids of Testing_Output_Data");
 		BsonArray output = contentToCheck.getDocument("INTERNAL_STRUCTURE").getArray("Testing_Output_Data");
 		Set<String> tod = new TreeSet<String>();
 		for (BsonValue o : output ) {
@@ -165,7 +165,7 @@ public class LogicalValidator implements Checker {
 			}
 		}
 		
-		LOGGER.debug("Check for invalid names of DATA_MANAGEMENT.methods");
+		LOGGER.debug("Check for invalid ids of DATA_MANAGEMENT.methods");
 		BsonArray dm = contentToCheck.getArray("DATA_MANAGEMENT");
 		Set<String> dm_ms = new TreeSet<String>();
 		for (BsonValue dm_method : dm) {
