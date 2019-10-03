@@ -23,7 +23,6 @@ package gr.ntua.ditas.repositoryengine.restheartcustomization;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonValue;
@@ -33,7 +32,6 @@ import org.restheart.metadata.checkers.Checker;
 import org.restheart.metadata.checkers.CheckersUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import io.undertow.server.HttpServerExchange;
 
 public class LogicalValidator implements Checker {

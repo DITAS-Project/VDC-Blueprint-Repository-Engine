@@ -25,15 +25,11 @@ import org.restheart.utils.HttpStatus;
 import org.restheart.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Lists;
-
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
-
 import java.io.File;
 import java.util.List;
-
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
