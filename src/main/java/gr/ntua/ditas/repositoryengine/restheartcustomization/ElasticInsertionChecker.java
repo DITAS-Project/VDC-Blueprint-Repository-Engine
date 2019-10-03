@@ -21,9 +21,6 @@
 package gr.ntua.ditas.repositoryengine.restheartcustomization;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -37,18 +34,16 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.bson.BsonDocument;
 import org.bson.BsonValue;
 import org.restheart.handlers.RequestContext;
-import org.restheart.handlers.RequestContext.METHOD;
 import org.restheart.metadata.checkers.Checker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import io.undertow.server.HttpServerExchange;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -91,6 +86,46 @@ public class ElasticInsertionChecker implements Checker {
 		String id = contentToCheck.getObjectId("_id").getValue().toHexString();
 		BsonDocument elastic_doc = contentToCheck.getDocument("INTERNAL_STRUCTURE").getDocument("Overview");
 		elastic_doc.remove("name");
+		
+		
+		JSONObject tempObj = new JSONObject();
+		try {
+			tempObj = (JSONObject) parser.parse(elastic_doc.toString());
+		} catch (ParseException ex) {
+			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		ArrayList<String> wordsArray = new ArrayList<String>();
+                
+                
+		String description = (String) tempObj.get("description");
+		String[] descriptionWordsArray = description.trim().split("\\s+");
+		for (int i=0; i<descriptionWordsArray.length; i++) {
+			wordsArray.add(descriptionWordsArray[i]);
+		}        
+                
+		JSONArray tagsArray = (JSONArray) tempObj.get("tags");
+		JSONObject tagsObject = new JSONObject();
+		JSONArray methodTagsArray = new JSONArray();
+		String methodTag;
+		String[] methodTagWordsArray;
+                
+		for (int j=0; j<tagsArray.size(); j++) {
+			tagsObject = (JSONObject) tagsArray.get(j);
+			methodTagsArray = (JSONArray) tagsObject.get("tags");
+			for (int k=0; k<methodTagsArray.size(); k++) {  
+				methodTag = methodTagsArray.get(k).toString();
+				methodTagWordsArray = methodTag.trim().split("\\s+");
+				for (int l=0; l<methodTagWordsArray.length; l++) {            
+					wordsArray.add(descriptionWordsArray[l]);
+				}
+			}        
+		}
+                
+		Double factor = new Double(wordsArray.size());
+		factor = 1/factor;
+		tempObj.put("factor",factor);
+		
+		
 		LOGGER.debug("blueprint for elastic : "+elastic_doc.toJson());
 		
 		HttpClient httpClient;
@@ -108,7 +143,8 @@ public class ElasticInsertionChecker implements Checker {
 	   
 		try {
 			HttpPut request = new HttpPut("http://"+Esip+":50014/"+Esindex+"/"+id);
-			StringEntity params =new StringEntity(elastic_doc.toJson());
+			//StringEntity params =new StringEntity(elastic_doc.toJson());
+			StringEntity params = new StringEntity(tempObj.toString());
 			request.addHeader("content-type", "application/json");
 			request.setEntity(params);
 			HttpResponse response = httpClient.execute(request);
