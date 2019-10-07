@@ -121,7 +121,7 @@ public class ElasticInsertionChecker implements Checker {
 			}        
 		}
                 
-		Double tagsFactor = new Double(methodTagWordsArray.size());
+		Double tagsFactor = new Double(tagsArrayList.size());
 		tagsFactor = 1/tagsFactor;
 		tempObj.put("descriptionFactor",descriptionFactor);
 		tempObj.put("tagsFactor",tagsFactor);
