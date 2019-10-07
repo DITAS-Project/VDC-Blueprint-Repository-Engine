@@ -94,15 +94,15 @@ public class ElasticInsertionChecker implements Checker {
 		} catch (ParseException ex) {
 			java.util.logging.Logger.getLogger(ElasticInsertionChecker.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		ArrayList<String> wordsArray = new ArrayList<String>();
                 
                 
 		String description = (String) tempObj.get("description");
 		String[] descriptionWordsArray = description.trim().split("\\s+");
-		for (int i=0; i<descriptionWordsArray.length; i++) {
-			wordsArray.add(descriptionWordsArray[i]);
-		}        
-                
+		Double descriptionFactor = new Double(descriptionWordsArray.length);
+		descriptionFactor = 1/descriptionFactor;
+		
+
+		ArrayList<String> tagsArrayList = new ArrayList<String>();
 		JSONArray tagsArray = (JSONArray) tempObj.get("tags");
 		JSONObject tagsObject = new JSONObject();
 		JSONArray methodTagsArray = new JSONArray();
@@ -116,14 +116,15 @@ public class ElasticInsertionChecker implements Checker {
 				methodTag = methodTagsArray.get(k).toString();
 				methodTagWordsArray = methodTag.trim().split("\\s+");
 				for (int l=0; l<methodTagWordsArray.length; l++) {            
-					wordsArray.add(descriptionWordsArray[l]);
+					tagsArrayList.add(methodTagWordsArray[l]);
 				}
 			}        
 		}
                 
-		Double factor = new Double(wordsArray.size());
-		factor = 1/factor;
-		tempObj.put("factor",factor);
+		Double tagsFactor = new Double(methodTagWordsArray.size());
+		tagsFactor = 1/tagsFactor;
+		tempObj.put("descriptionFactor",descriptionFactor);
+		tempObj.put("tagsFactor",tagsFactor);
 		
 		
 		LOGGER.debug("blueprint for elastic : "+elastic_doc.toJson());
