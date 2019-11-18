@@ -104,6 +104,7 @@ public class ElasticInsertionChecker implements Checker {
 
 		ArrayList<String> tagsArrayList = new ArrayList<String>();
 		JSONArray tagsArray = (JSONArray) tempObj.get("tags");
+                Double tagsArraySize = new Double(tagsArray.size());
 		JSONObject tagsObject = new JSONObject();
 		JSONArray methodTagsArray = new JSONArray();
 		String methodTag;
@@ -122,6 +123,7 @@ public class ElasticInsertionChecker implements Checker {
 		}
                 
 		Double tagsFactor = new Double(tagsArrayList.size());
+                tagsFactor = 1/tagsArraySize;
 		tagsFactor = 1/tagsFactor;
 		tempObj.put("descriptionFactor",descriptionFactor);
 		tempObj.put("tagsFactor",tagsFactor);
