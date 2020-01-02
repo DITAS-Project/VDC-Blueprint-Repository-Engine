@@ -99,7 +99,7 @@ public class ElasticInsertionChecker implements Checker {
 		String description = (String) tempObj.get("description");
 		String[] descriptionWordsArray = description.trim().split("\\s+");
 		Double descriptionFactor = new Double(descriptionWordsArray.length);
-		descriptionFactor = 1/descriptionFactor;
+		descriptionFactor = 1/(Math.sqrt(descriptionFactor));
 		
 
 		ArrayList<String> tagsArrayList = new ArrayList<String>();
@@ -124,7 +124,10 @@ public class ElasticInsertionChecker implements Checker {
                 
 		Double tagsFactor = new Double(tagsArrayList.size());
                 tagsFactor = tagsFactor/tagsArraySize;
-		tagsFactor = 1/tagsFactor;
+		tagsFactor = 1/(Math.sqrt(tagsFactor));
+                
+                
+                
 		tempObj.put("descriptionFactor",descriptionFactor);
 		tempObj.put("tagsFactor",tagsFactor);
 		
