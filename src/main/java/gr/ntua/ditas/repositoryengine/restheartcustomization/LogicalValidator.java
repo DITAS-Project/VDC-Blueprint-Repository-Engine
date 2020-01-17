@@ -78,16 +78,6 @@ public class LogicalValidator implements Checker {
 					context.addWarning(warning);
 					errorFound = true;
 				}
-				/*BsonArray method_ds = method.getArray("x-data-sources");
-				for (BsonValue data_source : method_ds) {
-					String ds_id = data_source.asString().getValue();
-					if (!ds.contains(ds_id)) {
-						warning = "Data source " + ds_id + " in EXPOSED_API.Paths."+pathURI+"."+opname+" is not declared in INTERNAL_STRUCTURE.Data_Sources";
-						LOGGER.debug(warning);
-						context.addWarning(warning);
-						errorFound = true;
-					}
-				}*/
 			}
 		}
 		
@@ -145,6 +135,7 @@ public class LogicalValidator implements Checker {
 		}
 		
 		LOGGER.debug("Check for invalid method_ids of Testing_Output_Data");
+                if (contentToCheck.getDocument("INTERNAL_STRUCTURE").containsKey("Testing_Output_Data")) {
 		BsonArray output = contentToCheck.getDocument("INTERNAL_STRUCTURE").getArray("Testing_Output_Data");
 		Set<String> tod = new TreeSet<String>();
 		for (BsonValue o : output ) {
@@ -162,7 +153,8 @@ public class LogicalValidator implements Checker {
 				errorFound = true;
 			}
 		}
-		
+                }
+                
 		LOGGER.debug("Check for invalid ids of DATA_MANAGEMENT.methods");
 		BsonArray dm = contentToCheck.getArray("DATA_MANAGEMENT");
 		Set<String> dm_ms = new TreeSet<String>();
